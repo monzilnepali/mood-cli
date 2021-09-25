@@ -1,9 +1,11 @@
-# Mood-cli
-play relaxing music on cli
+# Mood-cli :notes:
+Experience chillaxing nature sound from your cli :smile:
 
 
 ## Built With
 - [beep](https://github.com/faiface/beep)
+- [cobra](https://github.com/spf13/cobra)
+- [survey](https://github.com/AlecAivazis/survey)
 
 ## Getting started
 
@@ -12,17 +14,23 @@ play relaxing music on cli
 
 ### Installation
 1. Clone the repo
-    > git clone git@github.com:monzilnepali/mood-cli.git
-2. Run
-    > go run main.go
+    ```bash
+     git clone git@github.com:monzilnepali/mood-cli.git
+    ```
+2. Install depdendencies
+    ```bash
+     go install
+    ```
+3. Run
+    ```bash
+    go run main.go
+    ```
+
 
 
 For playback, Beep uses Oto under the hood.
-Linux
+- Linux
 ALSA is required. On Ubuntu or Debian, run this command:
-> apt install libasound2-dev
-
-In most cases this command must be run by root user or through sudo command.
-
-
-sound format .ogg and must have same sample rate
+```bash
+ apt install libasound2-dev
+```

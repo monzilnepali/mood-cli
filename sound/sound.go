@@ -10,6 +10,7 @@ import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/beep/vorbis"
 	"github.com/monzilnepali/mood-cli/constants"
 	"github.com/monzilnepali/mood-cli/utils"
@@ -28,7 +29,7 @@ type Preset struct {
 	Sounds []SoundPreset `json:"sounds"`
 }
 
-func GetAudioStreamer(audioPath string, volume_level int) (volume *effects.Volume) {
+func getAudioStreamer(audioPath string, volume_level int) (volume *effects.Volume) {
 
 	f, err := os.Open(audioPath)
 	if err != nil {
@@ -64,15 +65,16 @@ func GetAudioStreamer(audioPath string, volume_level int) (volume *effects.Volum
 	volume = &effects.Volume{
 		Streamer: ctrl,
 		Base:     1,
-		Volume:   float64(volume_level),
-		Silent:   silent,
+		//TODO: Calculate the volume level by volumn percentage from preset
+		Volume: float64(volume_level),
+		Silent: silent,
 	}
 
 	return volume
 }
 
-//LoadPreset load user preset all sound and play
-func LoadPreset() (streamers []*effects.Volume, err error) {
+//GetComposedSoundsFromPreset load user preset
+func GetComposedSoundsFromPreset() (streamers []*effects.Volume, err error) {
 	json_string := `
 	{
 		"name":"first",
@@ -83,6 +85,10 @@ func LoadPreset() (streamers []*effects.Volume, err error) {
 			},
 			{
 				"name": "birds",
+				"volume_level": 10
+			},
+			{
+				"name": "waves",
 				"volume_level": 10
 			}
 	]}`
@@ -99,9 +105,47 @@ func LoadPreset() (streamers []*effects.Volume, err error) {
 	for _, sound := range preset.Sounds {
 		soundPath := constants.SoundData[sound.Name]
 		volume_level := sound.VolumeLevel
-		streamer := GetAudioStreamer(soundPath, volume_level)
+		streamer := getAudioStreamer(soundPath, volume_level)
 		data = append(data, streamer)
 	}
 
 	return data, nil
+}
+
+//GetComposedSounds
+func GetComposedSounds(soundList []SoundPreset) (streamers []*effects.Volume, err error) {
+	data := make([]*effects.Volume, len(soundList))
+
+	for _, sound := range soundList {
+		soundPath := constants.SoundData[sound.Name]
+		volume_level := sound.VolumeLevel
+		streamer := getAudioStreamer(soundPath, volume_level)
+		data = append(data, streamer)
+	}
+
+	return data, nil
+}
+
+//initialize the speaker
+func Play(soundList []*effects.Volume) {
+	//default sampling rate = 44100
+	//TODO: Make the speaker sample dynamic
+	//https://github.com/faiface/beep/wiki/Hello,-Beep!#dealing-with-different-sample-rates
+	err := speaker.Init(44100, 4410)
+	if err != nil {
+		fmt.Print("Unable to initiate speaker")
+		log.Fatal(err)
+	}
+
+	for _, audiodata := range soundList {
+		if audiodata != nil {
+			speaker.Play(audiodata)
+		}
+	}
+
+	for {
+		fmt.Print("Press [ENTER] to stop. ")
+		fmt.Scanln()
+		os.Exit(0)
+	}
 }
