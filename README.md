@@ -25,3 +25,4 @@ ALSA is required. On Ubuntu or Debian, run this command:
 In most cases this command must be run by root user or through sudo command.
 
 
+sound format .ogg and must have same sample rate
