@@ -2,38 +2,40 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"log"
+	"os"
 
-	"github.com/faiface/beep"
-	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/speaker"
-	"github.com/monzilnepali/mood-cli/utils"
+	"github.com/monzilnepali/mood-cli/sound"
 )
 
+// 44100 4410
+
 func main() {
-	streamer, format := utils.GetAudioStreamer("./resources/data_resources_sounds_birds.ogg")
-	streamer1, _ := utils.GetAudioStreamer("./resources/data_resources_sounds_rain.ogg")
 
-	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
-	ctrl := &beep.Ctrl{Streamer: beep.Loop(-1, streamer), Paused: false}
-	ctrl1 := &beep.Ctrl{Streamer: beep.Loop(-1, streamer1), Paused: false}
+	//initialize the speaker
+	//TODO: Make the speaker sample dynamic
+	// https://github.com/faiface/beep/wiki/Hello,-Beep!#dealing-with-different-sample-rates
+	speaker.Init(44100, 4410)
 
-	volume := &effects.Volume{
-		Streamer: ctrl1,
-		Base:     1,
-		Volume:   -5,
-		Silent:   false,
+	soundList, err := sound.LoadPreset()
+
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	speaker.Play(ctrl)
-	speaker.Play(volume)
+	for _, audiodata := range soundList {
+		if audiodata != nil {
+			speaker.Play(audiodata)
+		}
+
+	}
 
 	for {
-		fmt.Print("Press [ENTER] to pause/resume. ")
+		fmt.Print("Press [ENTER] to stop. ")
 		fmt.Scanln()
-		speaker.Lock()
-		ctrl.Paused = !ctrl.Paused
-		ctrl1.Paused = !ctrl1.Paused
-		speaker.Unlock()
+		os.Exit(0)
+
 	}
+
 }
