@@ -1,5 +1,5 @@
 # Mood-cli :notes:
-Experience chillaxing nature sound from your cli :smile:
+Listen to chillaxing nature sound from your cli :smile:
 
 
 ## Built With
