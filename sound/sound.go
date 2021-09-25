@@ -73,8 +73,8 @@ func getAudioStreamer(audioPath string, volume_level int) (volume *effects.Volum
 	return volume
 }
 
-//LoadPreset load user preset all sound and play
-func loadPreset() (streamers []*effects.Volume, err error) {
+//GetComposedSoundsFromPreset load user preset
+func GetComposedSoundsFromPreset() (streamers []*effects.Volume, err error) {
 	json_string := `
 	{
 		"name":"first",
@@ -112,15 +112,28 @@ func loadPreset() (streamers []*effects.Volume, err error) {
 	return data, nil
 }
 
-func Play() {
-	//initialize the speaker
-	// default sampling rate = 44100
+//GetComposedSounds
+func GetComposedSounds(soundList []SoundPreset) (streamers []*effects.Volume, err error) {
+	data := make([]*effects.Volume, len(soundList))
+
+	for _, sound := range soundList {
+		soundPath := constants.SoundData[sound.Name]
+		volume_level := sound.VolumeLevel
+		streamer := getAudioStreamer(soundPath, volume_level)
+		data = append(data, streamer)
+	}
+
+	return data, nil
+}
+
+//initialize the speaker
+func Play(soundList []*effects.Volume) {
+	//default sampling rate = 44100
 	//TODO: Make the speaker sample dynamic
 	//https://github.com/faiface/beep/wiki/Hello,-Beep!#dealing-with-different-sample-rates
-	speaker.Init(44100, 4410)
-	soundList, err := loadPreset()
-
+	err := speaker.Init(44100, 4410)
 	if err != nil {
+		fmt.Print("Unable to initiate speaker")
 		log.Fatal(err)
 	}
 

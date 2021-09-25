@@ -6,4 +6,5 @@ var SoundData = map[string]string{
 	"waves": "./resources/waves.ogg",
 }
 
+var SoundList = []string{"birds", "waves"}
 var SupportedAudioFormat = []string{".ogg", ".mp3"}

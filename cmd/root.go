@@ -9,11 +9,11 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "mood-cli",
-	Short: "Listen some relaxing sound in the terminal",
+	Short: "Listen relaxing sound in the terminal",
 	Long:  `relaxing ambiances from terminal`,
 	Run: func(cmd *cobra.Command, args []string) {
+		PromptSoundSelect()
 
-		fmt.Println("hello")
 	},
 }
 
