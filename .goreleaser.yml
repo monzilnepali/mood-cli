@@ -28,3 +28,10 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+release:
+  github:
+    owner: MonzilNepali
+    name: mood-cli
+  draft: true
+  prerelease: true
