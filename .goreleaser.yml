@@ -10,12 +10,13 @@ builds:
       - CGO_ENABLED=1
     goos:
       - linux
-      - windows
     goarch:
       - amd64
 
 archives:
-  - format: binary
+  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}"
+    replacements:
+      amd64: 64-bit
 
 checksum:
   name_template: "checksums.txt"
