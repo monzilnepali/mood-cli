@@ -1,14 +1,7 @@
-name: Release
+name: Build Test
 
 on:
-  push:
-    branches:
-      - "master"
-    tags:
-      - "v*"
-
-permissions:
-  contents: write
+  pull_request:
 
 jobs:
   goreleaser:
@@ -32,9 +25,4 @@ jobs:
       - name: GoReleaser
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: |
-          if [[ $GITHUB_REF == refs/tags/v* ]]; then
-            goreleaser
-          elif [[ $GITHUB_REF == refs/heads/master ]]; then
-            goreleaser --snapshot
-          fi
+        run: goreleaser build
