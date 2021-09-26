@@ -3,8 +3,10 @@ name: goreleaser
 on:
   push:
     branches:
-      - main
-      - add-goreleaser
+      - "master"
+    tags:
+      - "v*"
+  pull_request:
 
 permissions:
   contents: write
@@ -24,11 +26,16 @@ jobs:
         # https://github.com/hajimehoshi/oto#linux
       - name: Install ALSA
         run: sudo apt install libasound2-dev
-      - name: Run GoReleaser
+      - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
-          distribution: goreleaser
-          version: latest
-          args: release --rm-dist
+          install-only: true
+      - name: GoReleaser
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            goreleaser
+          elif [[ $GITHUB_REF == refs/heads/master ]]; then
+            goreleaser --snapshot
+          fi
