@@ -21,7 +21,7 @@ var format beep.Format
 
 type SoundPreset struct {
 	Name        string `json:"name"`
-	VolumeLevel int    `json:"volume_level"`
+	VolumeLevel int    `json:"volume_level"` //percentage level
 }
 
 type Preset struct {
@@ -69,10 +69,9 @@ func getAudioStreamer(audioPath string, volume_level int) (volume *effects.Volum
 
 	volume = &effects.Volume{
 		Streamer: ctrl,
-		Base:     1,
-		//TODO: Calculate the volume level by volumn percentage from preset
-		Volume: float64(volume_level),
-		Silent: silent,
+		Base:     2,
+		Volume:   -float64(100-volume_level) / 100.0 * 5,
+		Silent:   silent,
 	}
 
 	return volume
