@@ -4,16 +4,18 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/kyokomi/emoji"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "mood-cli",
-	Short: "Listen relaxing sound in the terminal",
-	Long:  `relaxing ambiances from terminal`,
+	Short: "relaxing cli",
+	Long:  `Listen to relaxing ambiances in your cli`,
 	Run: func(cmd *cobra.Command, args []string) {
-		PromptSoundSelect()
-
+		emoji.Println(" Mood Cli :notes:")
+		fmt.Println()
+		Menu()
 	},
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/monzilnepali/mood-cli/constants"
 	"github.com/monzilnepali/mood-cli/sound"
+	"github.com/monzilnepali/mood-cli/utils"
 )
 
 func PromptSoundSelect() {
@@ -18,12 +19,14 @@ func PromptSoundSelect() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	streamingSoundList := make([]sound.SoundPreset, 0)
 
 	for _, soundName := range selectSoundList {
+		volume_level := utils.PromptVolumeInput(soundName)
 		streamingSoundList = append(streamingSoundList, sound.SoundPreset{
 			Name:        soundName,
-			VolumeLevel: 10,
+			VolumeLevel: volume_level,
 		})
 	}
 
@@ -32,6 +35,5 @@ func PromptSoundSelect() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	sound.Play(composedSounds)
 }
