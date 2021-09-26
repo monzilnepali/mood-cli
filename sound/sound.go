@@ -31,7 +31,12 @@ type Preset struct {
 
 func getAudioStreamer(audioPath string, volume_level int) (volume *effects.Volume) {
 
-	f, err := os.Open(audioPath)
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	f, err := os.Open(dir + audioPath)
 	if err != nil {
 		log.Fatal(err)
 	}

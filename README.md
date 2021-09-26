@@ -10,7 +10,7 @@ Listen to chillaxing nature sound from your cli :smile:
 ## Getting started
 
 ### Prerequisites
-- go 1.14
+- go 1.17
 
 ### Installation
 1. Clone the repo
