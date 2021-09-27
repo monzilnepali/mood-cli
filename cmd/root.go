@@ -14,7 +14,6 @@ var rootCmd = &cobra.Command{
 	Long:  `Listen to relaxing ambiances in your cli`,
 	Run: func(cmd *cobra.Command, args []string) {
 		emoji.Println("\n Mood Cli :notes:")
-		fmt.Println()
 		Menu()
 	},
 }

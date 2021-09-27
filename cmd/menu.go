@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/AlecAivazis/survey/v2"
 )
 
@@ -18,7 +16,7 @@ func Menu() {
 	case "Listen":
 		PromptSoundSelect()
 	case "Available presets":
-		fmt.Println("soon...")
+		PromptPresetSelect()
 	}
 
 }

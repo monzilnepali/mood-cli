@@ -2,8 +2,6 @@ name: Release
 
 on:
   push:
-    branches:
-      - "master"
     tags:
       - "v*"
 
@@ -32,9 +30,4 @@ jobs:
       - name: GoReleaser
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: |
-          if [[ $GITHUB_REF == refs/tags/v* ]]; then
-            goreleaser
-          elif [[ $GITHUB_REF == refs/heads/master ]]; then
-            goreleaser --snapshot
-          fi
+        run: goreleaser

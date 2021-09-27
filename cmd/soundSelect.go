@@ -1,13 +1,12 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/kyokomi/emoji"
 	"github.com/monzilnepali/mood-cli/constants"
+	"github.com/monzilnepali/mood-cli/file"
 	"github.com/monzilnepali/mood-cli/sound"
 	"github.com/monzilnepali/mood-cli/utils"
 )
@@ -18,7 +17,7 @@ func PromptSoundSelect() {
 		Message: "Select:",
 		Options: constants.SoundList,
 	}
-	err := survey.AskOne(prompt, &selectSoundList)
+	err := survey.AskOne(prompt, &selectSoundList, survey.WithValidator(survey.Required))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,14 +32,11 @@ func PromptSoundSelect() {
 		})
 	}
 
-	composedSounds, err := sound.GetComposedSounds(streamingSoundList)
+	presetName, isSave := PromptPresetSave()
 
-	if err != nil {
-		log.Fatal(err)
+	if isSave {
+		file.UpdatePreset(presetName, streamingSoundList)
 	}
 
-	str := strings.Join(selectSoundList, ", ")
-	emojiString := emoji.Sprint("\n :sound:", str)
-	fmt.Println(emojiString)
-	sound.Play(composedSounds)
+	sound.Play(streamingSoundList, strings.Join(selectSoundList, ", "))
 }
