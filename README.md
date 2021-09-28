@@ -9,6 +9,10 @@ Listen to chillaxing nature sound from your cli :smile:
 - [cobra](https://github.com/spf13/cobra)
 - [survey](https://github.com/AlecAivazis/survey)
 
+## Installation
+```bash
+$ curl -sf https://raw.githubusercontent.com/monzilnepali/mood-cli/main/install.sh | sudo sh
+```
 ## Getting started
 
 ### Prerequisites
