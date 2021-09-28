@@ -1,5 +1,8 @@
 # Mood-cli :notes:
-[![Go Report Card](https://goreportcard.com/badge/github.com/monzilnepali/mood-cli)](https://goreportcard.com/report/github.com/monzilnepali/mood-cli)
+![Go Report Card](https://goreportcard.com/badge/github.com/monzilnepali/mood-cli)
+![Linux](https://svgshare.com/i/Zhy.svg)
+![release](https://img.shields.io/github/v/release/monzilnepali/mood-cli?include_prereleases)
+
 
 Listen to chillaxing nature sound from your cli :smile:
 
