@@ -12,6 +12,8 @@ Listen to chillaxing nature sound from your cli :smile:
 - [cobra](https://github.com/spf13/cobra)
 - [survey](https://github.com/AlecAivazis/survey)
 
+## Installation
+ checkout the [release page](https://github.com/monzilnepali/mood-cli/releases)
 ## Getting started
 
 ### Prerequisites
