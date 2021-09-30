@@ -1,7 +1,10 @@
 package sound
 
 import (
+	"bytes"
+	"embed"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,6 +23,8 @@ var streamer beep.StreamSeekCloser
 
 // var format beep.Format
 
+var Resources embed.FS
+
 type SoundPreset struct {
 	Name        string `json:"name"`
 	VolumeLevel int    `json:"volume_level"` //percentage level
@@ -29,16 +34,13 @@ type Preset map[string][]SoundPreset
 
 func getAudioStreamer(audioPath string, volume_level int) (volume *effects.Volume) {
 
-	dir, err := os.Getwd()
+	data, err := Resources.ReadFile(audioPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	f, err := os.Open(dir + audioPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	fileReader := bytes.NewReader(data)
+	readCloser := ioutil.NopCloser(fileReader)
 	fileExtension := filepath.Ext(audioPath)
 
 	if !utils.Include(constants.SupportedAudioFormat, fileExtension) {
@@ -48,9 +50,9 @@ func getAudioStreamer(audioPath string, volume_level int) (volume *effects.Volum
 
 	switch fileExtension {
 	case ".ogg":
-		streamer, _, err = vorbis.Decode(f)
+		streamer, _, err = vorbis.Decode(readCloser)
 	case ".mp3":
-		streamer, _, err = mp3.Decode(f)
+		streamer, _, err = mp3.Decode(readCloser)
 	}
 
 	if err != nil {

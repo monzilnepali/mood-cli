@@ -1,17 +1,21 @@
 package main
 
-import "github.com/monzilnepali/mood-cli/cmd"
+import (
+	"embed"
 
-type SoundPreset struct {
-	Name        string `json:"name"`
-	VolumeLevel int    `json:"volume_level"` //percentage level
-}
+	"github.com/monzilnepali/mood-cli/cmd"
+	"github.com/monzilnepali/mood-cli/sound"
+)
 
-type Preset struct {
-	Name   string        `json:"name"`
-	Sounds []SoundPreset `json:"sounds"`
-}
+//TODO: Remove the audio resource bind from build and use http download
+
+//go:embed resources/*
+var resources embed.FS
 
 func main() {
 	cmd.Execute()
+}
+
+func init() {
+	sound.Resources = resources
 }
